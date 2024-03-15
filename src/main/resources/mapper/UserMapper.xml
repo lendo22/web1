@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cp.mapper.UserMapper">
+
+    <!--List<User> selectAll();-->
+    <select id="selectAll" resultType="User">
+        SELECT id,`name`,`password`,role,nick_name,email,phone,image,`status`,deleted,gmt_create,gmt_modified
+        FROM user WHERE deleted=1
+    </select>
+    <!--void deleteById(Integer id);-->
+    <select id="selectById" resultType="User">
+        SELECT id,`name`,`password`,role,nick_name,email,phone,image,`status`,deleted,gmt_create,gmt_modified
+        FROM user
+        WHERE id=#{id}
+    </select>
+    <!--void deleteById(Integer id);-->
+    <!--真实删除-->
+    <!--<delete id="deleteById" parameterType="Integer">-->
+    <!--    DELETE FROM user WHERE id=#{id}-->
+    <!--</delete>-->
+    <!--逻辑删除-->
+    <update id="deleteById" parameterType="Integer">
+        UPDATE user SET deleted=0
+        WHERE id=#{id}
+    </update>
+
+    <!--void deleteAll(Integer[] ids);-->
+    <update id="deleteAll">
+        UPDATE user SET deleted=0
+        WHERE id IN
+        <foreach collection="array" open="(" item="id" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <!--void add(User user);-->
+    <insert id="add" parameterType="User">
+        INSERT INTO user (`name`,`password`,role,nick_name,email,phone,image)
+        VALUES (#{name},#{password},#{role},#{nickName},#{email},#{phone},#{image})
+    </insert>
+
+    <!--void update(User user);-->
+    <update id="update" parameterType="User">
+        UPDATE user SET name=#{name}, password=#{password}, role=#{role}, nick_name=#{nickName}, email=#{email}, phone=#{phone} ,image=#{image},status=#{status}
+        WHERE id=#{id}
+    </update>
+    <!--User login(String name, String password);-->
+    <select id="login" resultType="User">
+        SELECT id,`name`,`password`,role,nick_name,email,phone,image,`status`,deleted,gmt_create,gmt_modified
+        FROM `user`
+        WHERE name=#{name} AND password=#{password} AND deleted=1
+    </select>
+
+
+    <!--List<User> selectByPage(int offset, Integer pageSize);-->
+    <select id="selectByPage" resultType="User">
+        SELECT id,`name`,`password`,role,nick_name,email,phone,image,`status`,deleted,gmt_create,gmt_modified
+        FROM `user`
+        WHERE deleted=1
+        LIMIT #{offset},#{pageSize}
+    </select>
+
+
+    <!--int selectTotalCount();-->
+    <select id="selectTotalCount" resultType="Integer">
+        SELECT COUNT(*) FROM user WHERE deleted = 1
+    </select>
+</mapper>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <div th:replace="header::common"></div>
+    <style>
+        .center {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        .pagination{
+            display: inline-block;
+            padding-left: 0px;
+            margin: 0px 0px;
+            border-radius: 4px;
+        }
+        .table{
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 10px;
+            margin-top: 3px;
+        }
+    </style>
+</head>
+<body class="center">
+    <a class="btn btn-sm btn-primary "th:href="|/user/toAdd|">添加</a>
+    <a class="btn btn-sm btn-danger "onclick="deleteAll()">批量删除</a>
+    <table class="table table-striped table-bordered table-hover table-condensed">
+        <tr class="success">
+            <td><input type="checkbox" id="checkAll"/></td>
+            <td>ID</td>
+            <td>名字</td>
+            <td>密码</td>
+            <td>邮箱</td>
+            <td>电话</td>
+            <td>头像</td>
+            <td>角色</td>
+            <td>状态</td>
+            <td>更新时间</td>
+            <td>操作</td>
+        </tr>
+        <tr th:each="user:${pageInfo.list}">
+            <td><input type="checkbox" th:value="${user.id}" class="cb"/></td>
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.password}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.phone}"></td>
+            <td><img th:src="|/pic/${user.image}|" width="40px" height="40px"></td>
+            <td>
+                <span class="label label-warning" th:if="${user.role==1}">超级管理员</span>
+                <span class="label label-success" th:if="${user.role==2}">普通管理员</span>
+            </td>
+            <td>
+                <span class="label label-warning" th:if="${user.status==0}">禁用</span>
+                <span class="label label-success" th:if="${user.status==1}">正常</span>
+            </td>
+            <td th:text="${#dates.format(user.gmtModified,'yyyy-MM-dd hh:mm')}"></td>
+            <!--<td><a class="btn btn-danger" th:href="|/user/deleteById?id=${user.id}|">删除</a></td>-->
+            <td>
+                <a class="btn btn-danger" th:onclick="|deleteById(${user.id})|">删除</a>
+                <a class="btn btn-primary" th:href="|/user/toUpdate?id=${user.id}|">编辑</a>
+            </td>
+        </tr>
+
+    </table>
+    <nav th:if="${pageInfo.totalPage>=1}" aria-label="Page navigation">
+        <ul class="pagination pagination-sm">
+            <!--上一页-->
+            <th:block th:if="${pageInfo.pageNo==1}">
+                <li class="disabled">
+                    <a href="#" aria-label="Previous">
+                        <!--&laquo为向右箭头，标志下一页，等同于“下一页”-->
+                        <!--<span aria-hidden="true">&laquo;</span>-->
+                        <span aria-hidden="true">上一页</span>
+                    </a>
+                </li>
+            </th:block>
+            <th:block th:if="${pageInfo.pageNo!=1}">
+                <li>
+                    <a th:href="|/user/selectByPage?pageNo=${pageInfo.pageNo-1}|" aria-label="Previous">
+                        <!--&laquo为向右箭头，标志下一页，等同于“下一页”-->
+                        <!--<span aria-hidden="true">&laquo;</span>-->
+                        <span aria-hidden="true">上一页</span>
+                    </a>
+                </li>
+            </th:block>
+
+            <li th:class="${pageInfo.pageNo==page}?active:''" th:each="page:${#numbers.sequence(1,pageInfo.totalPage)}">
+                <!--<a th:href="|/user/selectByPage?pageNo=${page}|" th:text="${page}"></a>-->
+                <th:block th:if="${pageInfo.pageNo==page}">
+                    <a href="#" th:text="${page}"></a>
+                </th:block>
+                <th:block th:if="${pageInfo.pageNo!=page}">
+                    <a th:href="|/user/selectByPage?pageNo=${page}|" th:text="${page}"></a>
+                </th:block>
+            </li>
+            <!--下一页-->
+            <!--&raquo为向右箭头，标志下一页，等同于“下一页”-->
+            <th:block th:if="${pageInfo.pageNo==pageInfo.getTotalPage()}">
+                <li class="disabled">
+                    <a href="#" aria-label="Next">
+                        <!--<span aria-hidden="true">&raquo;</span>-->
+                        <span aria-hidden="true">下一页</span>
+                    </a>
+                </li>
+            </th:block>
+            <th:block th:if="${pageInfo.pageNo!=pageInfo.getTotalPage()}">
+                <li>
+                    <a th:href="|/user/selectByPage?pageNo=${pageInfo.pageNo+1}|" aria-label="Next">
+                        <!--&raquo为向右箭头，标志下一页，等同于“下一页”-->
+                        <!--<span aria-hidden="true">&raquo;</span>-->
+                        <span aria-hidden="true">下一页</span>
+                    </a>
+                </li>
+            </th:block>
+
+        </ul>
+    </nav>
+
+    <script>
+
+        // $(function (){// 页面加载完之后执行function里代码
+        //     $('#checkAll').click(function(){
+        //         $('.cb').prop('checked', this.checked);
+        //     });
+        // });
+        $(function () {
+            // 当页面加载完成后执行以下代码
+
+            // 全选按钮点击事件
+            $('#checkAll').click(function () {
+                // 将所有具有类名 'cb' 的复选框的 'checked' 属性设置为与全选按钮相同的值
+                $('.cb').prop('checked', this.checked);
+            });
+
+            // 单个复选框点击事件
+            $('.cb').click(function () {
+                // 如果某个复选框被取消选中
+                if (!$(this).prop('checked')) {
+                    // 取消选中全选按钮
+                    $('#checkAll').prop('checked', false);
+                } else {
+                    // 如果所有的 .cb 复选框都被手动选中
+                    if ($('.cb:checked').length === $('.cb').length) {
+                        // 选中全选按钮
+                        $('#checkAll').prop('checked', true);
+                    }
+                }
+            });
+        });
+
+
+
+
+        function deleteAll(id) {
+            layer.confirm('确认删除吗?',function() {
+                let array=new Array();
+                // $('.cb:checked')找到了加class='cb',而且checked(已经勾选状态的)
+                $('.cb:checked').each(function(){
+                    // 遍历每个勾选的checkbox，拿到里面的value值，放到array数组
+                    array.push($(this).val());
+                })
+                console.log(array);
+                if(array.length==0){
+                    mylayer.errorMsg('至少选择一个!');
+                    return;
+                }
+
+                location.href = '/user/deleteAll?ids=' + array;
+            });
+        }
+
+        function deleteById(id) {
+            layer.confirm('确认删除吗?',function() {
+                location.href = '/user/deleteById?id=' + id;
+            });
+
+
+
+            // js中单引号和双引号没有区别
+            // let isDelete = window.confirm('确认要删除吗?');
+            // if(isDelete){
+            //     location.href = '/user/deleteById?id=' + id;
+            // }
+        }
+    </script>
+
+
+
+
+</body>
+</html>

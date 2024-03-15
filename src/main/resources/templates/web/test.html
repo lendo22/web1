@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!--标题headline-->
+    <h1>一级标题</h1>
+    <h2>二级标题</h2>
+    <h3>三级标题</h3>
+    <h4>四级标题</h4>
+    <h5>五级标题</h5>
+    <h6>六级标题</h6>
+    <!--p=paragraph 段落-->
+    <p>王老师是Java讲师，朱老师是Java讲师，高老师是Java讲师</p>
+    <p>鞠老师是H5讲师，李老师是H5讲师</p>
+
+    <!-- br 换行 -->
+    <br />
+    <hr />
+    <!--img  图片
+       alt:替代文字，图片没有加载出来显示的文字
+       width:宽
+       height:高
+   -->
+    <img src="../static/img/img.png" width="200px" height="200px">
+    <img src="../static/img/img.png" width="200px" height="200px">
+    <!-- a 超链接
+       target="_blank" 在新窗口打开
+       title="悬停文字"
+   -->
+
+    <a href="user_list.html">跳转页面</a>
+    <a href="http://www.baidu.com">跳转百度页面</a>
+    <!-- 页面内的锚点使用id，使用a标签可以跳转到指定锚点 -->
+    <a href="#h3">跳转到h3标题</a>
+    <a href="#">跳转到网页的开始</a>
+
+    <br />
+    <hr />
+
+    <!--有序列表 ol=ordered list -->
+    <ol>
+        <li>北京</li>
+        <li>上海</li>
+        <li>深圳</li>
+        <li>广州</li>
+    </ol>
+    <!--无序列表 ul=unordered list -->
+    <ul>
+        <li>北京</li>
+        <li>上海</li>
+        <li>深圳</li>
+        <li>广州</li>
+    </ul>
+    <!-- 无序列表和有序列表可以嵌套 -->
+    <ul>
+        <li>北京</li>
+        <li>上海</li>
+        <li>深圳</li>
+        <li>广州</li>
+        <li>
+            山东
+            <ol>
+                <li>青岛</li>
+                <li>济南</li>
+                <li>烟台</li>
+            </ol>
+        </li>
+    </ul>
+    <br />
+    <hr />
+    <button>按钮</button>
+    <br />
+    <hr />
+    <form action="" method="post">
+        <table border="1" cellspacing="0">
+            <tr>
+                <td>用户名:</td>
+                <td><input type="text"/></td>
+            </tr>
+            <tr>
+                <td>密码:</td>
+                <td><input type="password"/></td>
+            </tr>
+            <tr>
+                <td>性别:</td>
+                <td>
+                    <input type="radio" name="gender"/>男
+                    <input type="radio" name="gender"/>女
+                </td>
+            </tr>
+            <tr>
+                <td>兴趣爱好:</td>
+                <td>
+                    <input type="checkbox"/>音乐<br/>
+                    <input type="checkbox"/>看书<br/>
+                    <input type="checkbox"/>爬山<br/>
+                </td>
+            </tr>
+            <tr>
+                <td>城市:</td>
+                <td>
+                    <select>
+                        <option>济南</option>
+                        <option>淄博</option>
+                        <option>青岛</option>
+                        <option>临沂</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>自我介绍:</td>
+                <td>
+                    <!--rows:行-->
+                    <!--cols:列-->
+                    <textarea rows="5" cols="20"></textarea>
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    <input type="submit" value="注册">
+                </td>
+                <td>
+                    <input type="reset" value="重置">
+                </td>
+            </tr>
+        </table>
+        <!--用户名: <input type="text"><br/>-->
+        <!--密码: <input type="text">-->
+    </form>
+    <br />
+    <hr />
+    <!--空格折叠现象
+       普通的空格在html里如果连续出现多个会被当成一个空格，
+       如果想显示多个连续的空格就要使用特殊的字符
+       &nbsp;    Non-breaking Space
+    -->
+    <div>
+        锄禾日当&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;午<br/>
+        汗滴禾下&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;土<br/>
+        谁知盘中&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;餐<br/>
+        粒粒皆辛&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;苦<br/>
+    </div>
+
+    <!--border:边框 cellspacing:单元格间隙 -->
+    <table border="1" cellspacing="0" width="400">
+        <tr>
+            <th>讲师名称</th>
+            <th>所教班级</th>
+        </tr>
+        <tr>
+            <td>王老师</td>
+            <td>Java180701</td>
+        </tr>
+        <tr>
+            <td>朱老师</td>
+            <td>Java180702</td>
+        </tr>
+        <tr>
+            <td>高老师</td>
+            <td>Java180703</td>
+        </tr>
+    </table>
+    <hr />
+    <table border="1" cellspacing="0" width="400">
+        <thead>
+        <tr>
+            <th>讲师名称</th>
+            <th>所教班级</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>王老师</td>
+            <td>Java180701</td>
+        </tr>
+        <tr>
+            <td>朱老师</td>
+            <td>Java180702</td>
+        </tr>
+        <tr>
+            <td>高老师</td>
+            <td>Java180703</td>
+        </tr>
+        </tbody>
+    </table>
+    <br />
+    <hr />
+    <!-- rowspan 行跨越 -->
+    <table border="1" cellspacing="0" width="400">
+        <tr>
+            <th>讲师名称</th>
+            <th>所教班级</th>
+        </tr>
+        <tr>
+            <td rowspan="2">王老师</td>
+            <td>Java180701</td>
+        </tr>
+        <tr>
+            <!--<td>朱老师</td>-->
+            <td>Java180702</td>
+        </tr>
+        <tr>
+            <td>高老师</td>
+            <td>Java180703</td>
+        </tr>
+    </table>
+    <br />
+    <hr />
+    <!-- colspan 列跨越 -->
+    <table border="1" cellspacing="0" width="400">
+        <tr>
+            <th>讲师名称</th>
+            <th>所教班级</th>
+        </tr>
+        <tr>
+            <td colspan="2">王老师</td>
+            <!--<td>Java180701</td>-->
+        </tr>
+        <tr>
+            <td>朱老师</td>
+            <td>Java180702</td>
+        </tr>
+        <tr>
+            <td>高老师</td>
+            <td>Java180703</td>
+        </tr>
+    </table>
+    <br />
+    <hr />
+</body>
+</html>

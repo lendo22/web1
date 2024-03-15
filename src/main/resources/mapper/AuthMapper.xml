@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cp.mapper.AuthMapper">
+
+    <!--List<Auth> selectAll();-->
+    <select id="selectAll" resultType="Auth">
+        SELECT id,name,path,role,status,deleted,gmt_create,gmt_modified
+        FROM auth WHERE deleted=1
+    </select>
+    <!--void deleteById(Integer id);-->
+    <select id="selectById" resultType="Auth">
+        SELECT id,name,path,role,status,deleted,gmt_create,gmt_modified
+        FROM auth
+        WHERE id=#{id}
+    </select>
+
+
+    <!--void deleteById(Integer id);-->
+    <!--真实删除-->
+    <!--<delete id="deleteById" parameterType="Integer">-->
+    <!--    DELETE FROM auth WHERE id=#{id}-->
+    <!--</delete>-->
+    <!--逻辑删除-->
+    <update id="deleteById" parameterType="Integer">
+        UPDATE auth SET deleted=0
+        WHERE id=#{id}
+    </update>
+
+    <!--void deleteAll(Integer[] ids);-->
+    <update id="deleteAll">
+        UPDATE auth SET deleted=0
+        WHERE id IN
+        <foreach collection="array" open="(" item="id" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <!--void add(Auth auth);-->
+    <insert id="add" parameterType="Auth">
+        INSERT INTO auth (name,path,role,status)
+        VALUES (#{name},#{path},#{role},#{status})
+    </insert>
+
+    <!--void update(Auth auth);-->
+    <update id="update" parameterType="Auth">
+        UPDATE auth SET name=#{name},path=#{path},role=#{role},status=#{status}
+        WHERE id=#{id}
+    </update>
+
+
+    <!--List<Auth> selectByPage(int offset, Integer pageSize);-->
+    <select id="selectByPage" resultType="Auth">
+        SELECT id,name,path,role,status,deleted,gmt_create,gmt_modified
+        FROM `auth`
+        WHERE deleted=1
+        ORDER BY role
+        LIMIT #{offset},#{pageSize}
+    </select>
+
+    <!--List<Auth> selectByRoleId(Integer id);-->
+    <select id="selectByRoleId" resultType="Auth">
+        SELECT id,name,path,role,status,deleted,gmt_create,gmt_modified
+        FROM `auth`
+        WHERE deleted=1 AND role=#{role} AND status=1
+    </select>
+    <!--int selectTotalCount();-->
+    <select id="selectTotalCount" resultType="Integer">
+        SELECT COUNT(*) FROM auth WHERE deleted = 1
+    </select>
+
+
+</mapper>

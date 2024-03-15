@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <div th:replace="header::common"></div>
+    <script type="text/javascript" th:src="@{/static/kindeditor/kindeditor.js}"></script>
+    <style>
+        .center{
+            width: 1000px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <form class="center" action="/auth/add" method="post">
+
+        <div class="form-group">
+            <label>权限名</label>
+            <input type="text" class="form-control" name="name">
+        </div>
+        <div class="form-group">
+            <label>权限路径</label>
+            <input type="text" class="form-control" name="path">
+        </div>
+        <div class="form-group">
+            <label>角色</label>
+            <select class="form-control" name="role">
+                <option value="1">超级管理员</option>
+                <option value="2">普通管理员</option>
+            </select>
+        </div>
+        <input class="btn btn-lg btn-primary btn-sm" type="submit" value="添加">
+    </form>
+
+</body>
+
+</html>

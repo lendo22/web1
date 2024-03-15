@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cp.mapper.BlogTypeMapper">
+
+    <!--List<BlogTypeCountVo> selectBlogTypeCount();-->
+    <select id="selectBlogTypeCount" resultType="BlogTypeCountVo">
+        SELECT bt.name,COUNT(*) AS 'value'
+        FROM blog AS b INNER JOIN blog_type AS bt
+        ON b.type_id=bt.id
+        WHERE bt.deleted = 1 AND b.deleted =1
+        GROUP BY bt.id;
+    </select>
+
+    <!--List<BlogType> selectAll();-->
+    <select id="selectAll" resultType="BlogType">
+        SELECT id,name,deleted,gmt_create,gmt_modified
+        FROM blog_type WHERE deleted=1
+    </select>
+    <!--void deleteById(Integer id);-->
+    <select id="selectById" resultType="BlogType">
+        SELECT id,name,deleted,gmt_create,gmt_modified
+        FROM blog_type
+        WHERE id=#{id}
+    </select>
+    <!--void deleteById(Integer id);-->
+    <!--真实删除-->
+    <!--<delete id="deleteById" parameterType="Integer">-->
+    <!--    DELETE FROM blog_type WHERE id=#{id}-->
+    <!--</delete>-->
+    <!--逻辑删除-->
+    <update id="deleteById" parameterType="Integer">
+        UPDATE blog_type SET deleted=0
+        WHERE id=#{id}
+    </update>
+
+    <!--void deleteAll(Integer[] ids);-->
+    <update id="deleteAll">
+        UPDATE blog_type SET deleted=0
+        WHERE id IN
+        <foreach collection="array" open="(" item="id" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <!--void add(BlogType blogType);-->
+    <insert id="add" parameterType="BlogType">
+        INSERT INTO blog_type (name)
+        VALUES (#{name})
+    </insert>
+
+    <!--void update(BlogType blogType);-->
+    <update id="update" parameterType="BlogType">
+        UPDATE blog_type SET name=#{name}
+        WHERE id=#{id}
+    </update>
+
+
+    <!--List<BlogType> selectByPage(int offset, Integer pageSize);-->
+    <select id="selectByPage" resultType="BlogType">
+        SELECT id,name,deleted,gmt_create,gmt_modified
+        FROM `blog_type`
+        WHERE deleted=1
+        LIMIT #{offset},#{pageSize}
+    </select>
+
+
+    <!--int selectTotalCount();-->
+    <select id="selectTotalCount" resultType="Integer">
+        SELECT COUNT(*) FROM blog_type WHERE deleted = 1
+    </select>
+
+</mapper>

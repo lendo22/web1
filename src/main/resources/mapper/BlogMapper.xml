@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cp.mapper.BlogMapper">
+
+    <!--List<Blog> selectAll();-->
+    <select id="selectAll" resultType="Blog">
+        SELECT id,title,image,click_count,content,type_id,`status`,deleted,gmt_create,gmt_modified
+        FROM blog WHERE deleted=1
+    </select>
+    <!--void deleteById(Integer id);-->
+    <select id="selectById" resultType="Blog">
+        SELECT id,title,image,click_count,content,type_id,`status`,deleted,gmt_create,gmt_modified
+        FROM blog
+        WHERE id=#{id}
+    </select>
+    <!--void deleteById(Integer id);-->
+    <!--真实删除-->
+    <!--<delete id="deleteById" parameterType="Integer">-->
+    <!--    DELETE FROM blog WHERE id=#{id}-->
+    <!--</delete>-->
+    <!--逻辑删除-->
+    <update id="deleteById" parameterType="Integer">
+        UPDATE blog SET deleted=0
+        WHERE id=#{id}
+    </update>
+
+    <!--void deleteAll(Integer[] ids);-->
+    <update id="deleteAll">
+        UPDATE blog SET deleted=0
+        WHERE id IN
+        <foreach collection="array" open="(" item="id" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <!--void add(Blog blog);-->
+    <insert id="add" parameterType="Blog">
+        INSERT INTO blog (`title`,type_id,content,image)
+        VALUES (#{title},#{typeId},#{content},#{image})
+    </insert>
+
+    <!--void update(Blog blog);-->
+    <update id="update" parameterType="Blog">
+        UPDATE blog SET title=#{title}, type_id=#{typeId}, content=#{content},image=#{image},status=#{status}
+        WHERE id=#{id}
+    </update>
+
+
+    <!--List<Blog> selectByPage(int offset, Integer pageSize);-->
+    <select id="selectByPage" resultType="BlogVo">
+        SELECT b.id,b.title,b.image,b.click_count,b.content,b.type_id,bt.name AS type_name, b.`status`,b.deleted,b.gmt_create,b.gmt_modified
+        FROM blog AS b INNER JOIN blog_type AS bt
+        ON b.type_id=bt.id
+        WHERE b.deleted=1 AND bt.deleted=1
+        LIMIT #{offset},#{pageSize}
+    </select>
+
+
+    <!--int selectTotalCount();-->
+    <select id="selectTotalCount" resultType="Integer">
+        SELECT COUNT(*) FROM blog WHERE deleted = 1
+    </select>
+</mapper>

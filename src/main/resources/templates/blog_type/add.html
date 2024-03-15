@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <div th:replace="header::common"></div>
+    <script type="text/javascript" th:src="@{/static/kindeditor/kindeditor.js}"></script>
+    <style>
+        .center{
+            width: 1000px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <form class="center" action="/blogType/add" method="post">
+
+        <div class="form-group">
+            <label>博客分类名</label>
+            <input type="text" class="form-control" name="name">
+        </div>
+
+        <input class="btn btn-lg btn-primary btn-sm" type="submit" value="添加">
+    </form>
+
+</body>
+
+</html>
